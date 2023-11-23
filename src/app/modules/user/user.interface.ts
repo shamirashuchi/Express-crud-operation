@@ -13,8 +13,8 @@ export type Taddress = {
 
 export type Torders = {
   productName: string;
-  price: string;
-  quantity: string;
+  price: number;
+  quantity: number;
 };
 
 export type Tuser = {
@@ -27,9 +27,9 @@ export type Tuser = {
   isActive: boolean;
   hobbies: string[];
   address: Taddress;
-  orders: Torders;
+  orders: Torders[];
 };
 
 export interface UserModel extends Model<Tuser> {
-  isUserExist(id: string): Promise<Tuser | null>;
+  isUserExist(userId: number): Promise<Tuser | null>;
 }
