@@ -39,8 +39,26 @@ const getsingleUserFromDB = async (userId: number) => {
   });
   return result;
 };
+
+const updateUserFromDB = async (
+  userId: number,
+  userData: Tuser,
+): Promise<Tuser | null> => {
+  const result = await mongodbuser.updateOne({ userId }, { $set: userData });
+
+  if (result.modifiedCount && result.modifiedCount > 0) {
+    // Document updated successfully
+    const updatedUser = await mongodbuser.findOne({ userId });
+    return updatedUser;
+  } else {
+    // No document matched the query or no modification was made
+    return null;
+  }
+};
+
 export const userservice = {
   createuserIntoDB,
   getAllUserFromDB,
   getsingleUserFromDB,
+  updateUserFromDB,
 };
