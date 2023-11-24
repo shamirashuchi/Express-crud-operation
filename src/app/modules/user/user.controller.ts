@@ -119,13 +119,11 @@ const updateUser = async (req: Request, res: Response) => {
     const userIdNumber = Number(id);
     const result = await userservice.updateUserFromDB(userIdNumber, user);
     if (result) {
+      result.password = undefined;
       res.status(200).json({
         status: 'success',
         message: 'User updated successfully',
-        data: {
-          ...result.toObject(),
-          password: undefined,
-        },
+        data: result,
       });
     } else {
       res.status(404).json({
