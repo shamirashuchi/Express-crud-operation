@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import validator from 'validator';
+import bcrypt from 'bcrypt';
 import {
   Taddress,
   TfullName,
@@ -7,6 +8,7 @@ import {
   Tuser,
   UserModel,
 } from './user.interface';
+import config from '../../config';
 
 const fullNameSchema = new Schema<TfullName>({
   firstName: {
@@ -125,6 +127,23 @@ const userSchema = new Schema<Tuser, UserModel>({
     trim: true,
     required: false,
   },
+});
+
+userSchema.pre('save', async function (next) {
+  // console.log(this, 'pre hook : we will save the data');
+  //hashing password and save into db
+  const user = this; //this is the data i send from postman
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
+
+userSchema.post('save', function (doc, next) {
+  doc.password = '';
+  console.log('post hook : we saved the data');
+  next();
 });
 
 userSchema.statics.isUserExist = async function (userId: number) {

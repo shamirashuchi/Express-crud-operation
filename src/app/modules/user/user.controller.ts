@@ -115,16 +115,17 @@ const getordersofsingleuser = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
   try {
     const { user } = req.body;
-    console.log(req.params);
     const id = req.params.userId;
-    console.log(id);
     const userIdNumber = Number(id);
     const result = await userservice.updateUserFromDB(userIdNumber, user);
     if (result) {
       res.status(200).json({
         status: 'success',
         message: 'User updated successfully',
-        data: result,
+        data: {
+          ...result.toObject(),
+          password: undefined,
+        },
       });
     } else {
       res.status(404).json({
