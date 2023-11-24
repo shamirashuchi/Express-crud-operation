@@ -40,6 +40,15 @@ const getsingleUserFromDB = async (userId: number) => {
   return result;
 };
 
+const getordersofUserFromDB = async (userId: number) => {
+  console.log(userId);
+  const result = await mongodbuser.findOne({ userId }).select({
+    orders: 1,
+    _id: 0,
+  });
+  return result;
+};
+
 const updateUserFromDB = async (
   userId: number,
   userData: Tuser,
@@ -85,4 +94,5 @@ export const userservice = {
   updateUserFromDB,
   deleteUser,
   updateOrderInDB,
+  getordersofUserFromDB,
 };
