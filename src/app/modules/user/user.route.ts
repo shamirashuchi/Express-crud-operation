@@ -5,5 +5,6 @@ router.post('/users', usercontrollers.createUser);
 router.get('/users', usercontrollers.getAlluser);
 router.get('/users/:userId', usercontrollers.getsingleuser);
 router.put('/users/:userId', usercontrollers.updateUser);
+router.put('/users/:userId/orders', usercontrollers.updateOrder);
 router.delete('/users/:userId', usercontrollers.deleteUser);
 export { router as UserRoutes };

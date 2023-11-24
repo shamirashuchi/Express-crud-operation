@@ -1,4 +1,4 @@
-import { Tuser } from './user.interface';
+import { Torders, Tuser } from './user.interface';
 import { mongodbuser } from './user.model';
 import mongoose from 'mongoose';
 
@@ -45,13 +45,30 @@ const updateUserFromDB = async (
   userData: Tuser,
 ): Promise<Tuser | null> => {
   const result = await mongodbuser.updateOne({ userId }, { $set: userData });
-
   if (result.modifiedCount && result.modifiedCount > 0) {
-    // Document updated successfully
     const updatedUser = await mongodbuser.findOne({ userId });
     return updatedUser;
   } else {
-    // No document matched the query or no modification was made
+    return null;
+  }
+};
+
+const updateOrderInDB = async (
+  userId: number,
+  updatedOrderData: Torders,
+): Promise<Tuser | null> => {
+  const filter = { userId };
+  const update = {
+    $push: {
+      orders: updatedOrderData,
+    },
+  };
+  const result = await mongodbuser.updateOne(filter, update);
+
+  if (result.modifiedCount && result.modifiedCount > 0) {
+    const updatedUser = await mongodbuser.findOne({ userId });
+    return updatedUser;
+  } else {
     return null;
   }
 };
@@ -67,4 +84,5 @@ export const userservice = {
   getsingleUserFromDB,
   updateUserFromDB,
   deleteUser,
+  updateOrderInDB,
 };

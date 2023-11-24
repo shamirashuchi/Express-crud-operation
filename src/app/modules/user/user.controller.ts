@@ -112,6 +112,39 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
+const updateOrder = async (req: Request, res: Response) => {
+  try {
+    const order = req.body;
+    console.log(req.params);
+    const id = req.params.userId;
+    console.log(id);
+    const userIdNumber = Number(id);
+    const result = await userservice.updateOrderInDB(userIdNumber, order);
+    if (result) {
+      res.status(200).json({
+        status: 'success',
+        message: 'Order added successfully',
+        data: result,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+  } catch (error: any) {
+    console.log(error);
+    res.status(500).json({
+      status: 'fail',
+      message: error.message || 'Something went wrong',
+    });
+  }
+};
+
 const deleteUser = async (req: Request, res: Response) => {
   try {
     console.log(req.params);
@@ -153,4 +186,5 @@ export const usercontrollers = {
   getsingleuser,
   updateUser,
   deleteUser,
+  updateOrder,
 };
