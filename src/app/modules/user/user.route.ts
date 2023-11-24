@@ -5,6 +5,7 @@ router.post('/users', usercontrollers.createUser);
 router.get('/users', usercontrollers.getAlluser);
 router.get('/users/:userId', usercontrollers.getsingleuser);
 router.get('/users/:userId/orders', usercontrollers.getordersofsingleuser);
+router.get('/users/:userId/orders/total-price', usercontrollers.calculateprice);
 router.put('/users/:userId', usercontrollers.updateUser);
 router.put('/users/:userId/orders', usercontrollers.updateOrder);
 router.delete('/users/:userId', usercontrollers.deleteUser);

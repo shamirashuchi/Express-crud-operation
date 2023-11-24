@@ -178,6 +178,56 @@ const updateOrder = async (req: Request, res: Response) => {
   }
 };
 
+const calculateprice = async (req: Request, res: Response) => {
+  try {
+    console.log(req.params);
+    const id = req.params.userId;
+    console.log(id);
+    const userIdNumber = Number(id);
+    const user = await userservice.calculateTotalPrice(userIdNumber);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+
+    if (!user.orders || user.orders.length === 0) {
+      return res.json({
+        success: true,
+        message: 'No orders found for the user.',
+        data: {
+          totalPrice: 0,
+        },
+      });
+    }
+
+    const totalPrice = user.orders.reduce(
+      (acc, order) => acc + order.price * order.quantity,
+      0,
+    );
+
+    return res.json({
+      success: true,
+      message: 'Total price calculated successfully!',
+      data: {
+        totalPrice: totalPrice,
+      },
+    });
+  } catch (error: any) {
+    console.log(error);
+    res.status(500).json({
+      status: 'fail',
+      message: error.message || 'Something went wrong',
+    });
+  }
+};
+
 const deleteUser = async (req: Request, res: Response) => {
   try {
     console.log(req.params);
@@ -221,4 +271,5 @@ export const usercontrollers = {
   deleteUser,
   updateOrder,
   getordersofsingleuser,
+  calculateprice,
 };

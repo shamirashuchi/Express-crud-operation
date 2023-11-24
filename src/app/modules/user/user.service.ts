@@ -87,6 +87,14 @@ const deleteUser = async (userId: number): Promise<Tuser | null> => {
   return result.deletedCount === 1 ? result : null;
 };
 
+const calculateTotalPrice = async (userId: number): Promise<number> => {
+  const user = await mongodbuser.findOne({ userId }).select({
+    orders: 1,
+    _id: 0,
+  });
+  return user;
+};
+
 export const userservice = {
   createuserIntoDB,
   getAllUserFromDB,
@@ -95,4 +103,5 @@ export const userservice = {
   deleteUser,
   updateOrderInDB,
   getordersofUserFromDB,
+  calculateTotalPrice,
 };
