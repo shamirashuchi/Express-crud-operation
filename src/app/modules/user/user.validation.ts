@@ -60,5 +60,5 @@ export const userZodSchema = z.object({
     message: 'At least one hobby is required.',
   }),
   address: addressZodSchema,
-  orders: z.array(ordersZodSchema),
+  orders: z.optional(z.array(ordersZodSchema)),
 });

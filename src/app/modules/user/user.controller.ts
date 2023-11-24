@@ -6,15 +6,18 @@ const createUser = async (req: Request, res: Response) => {
   try {
     //console.log('Received data:', req.body);
     const { user: userdata } = req.body;
-    console.log(userdata);
+    //console.log(userdata);
     const zodparsedata = userZodSchema.parse(userdata);
-    console.log(zodparsedata);
+    // console.log(zodparsedata);
     const result = await userservice.createuserIntoDB(zodparsedata);
-    console.log(result);
+    //console.log(result);
     res.status(200).json({
       success: true,
       message: 'user is created successfully',
-      data: result,
+      data: {
+        ...result.toObject(),
+        password: undefined,
+      },
     });
   } catch (err: any) {
     res.status(500).json({
@@ -24,6 +27,25 @@ const createUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+const getAlluser = async (req: Request, res: Response) => {
+  try {
+    const result = await userservice.getAllUserFromDB();
+
+    res.status(200).json({
+      success: true,
+      message: 'Users are retrieved successfully',
+      data: result,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'Something go wrong',
+      error: err,
+    });
+  }
+};
 export const usercontrollers = {
   createUser,
+  getAlluser,
 };

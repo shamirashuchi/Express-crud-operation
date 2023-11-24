@@ -123,7 +123,7 @@ const userSchema = new Schema<Tuser, UserModel>({
   orders: {
     type: [ordersSchema],
     trim: true,
-    required: [true, 'Orders are required.'],
+    required: false,
   },
 });
 
