@@ -74,6 +74,7 @@ const userSchema = new Schema<Tuser, UserModel>({
     type: Number,
     trim: true,
     required: [true, 'UserId is required.'],
+    unique: true,
   },
 
   username: {

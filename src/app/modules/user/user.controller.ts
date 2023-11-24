@@ -4,8 +4,11 @@ import { userservice } from './user.service';
 
 const createUser = async (req: Request, res: Response) => {
   try {
+    //console.log('Received data:', req.body);
     const { user: userdata } = req.body;
+    console.log(userdata);
     const zodparsedata = userZodSchema.parse(userdata);
+    console.log(zodparsedata);
     const result = await userservice.createuserIntoDB(zodparsedata);
     console.log(result);
     res.status(200).json({
