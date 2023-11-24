@@ -56,9 +56,15 @@ const updateUserFromDB = async (
   }
 };
 
+const deleteUser = async (userId: number): Promise<Tuser | null> => {
+  const result = await mongodbuser.deleteOne({ userId });
+  return result.deletedCount === 1 ? result : null;
+};
+
 export const userservice = {
   createuserIntoDB,
   getAllUserFromDB,
   getsingleUserFromDB,
   updateUserFromDB,
+  deleteUser,
 };

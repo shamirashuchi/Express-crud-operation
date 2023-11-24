@@ -83,7 +83,7 @@ const updateUser = async (req: Request, res: Response) => {
   try {
     const { user } = req.body;
     console.log(req.params);
-    const id = req.params.userid;
+    const id = req.params.userId;
     console.log(id);
     const userIdNumber = Number(id);
     const result = await userservice.updateUserFromDB(userIdNumber, user);
@@ -112,9 +112,45 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    console.log(req.params);
+    const id = req.params.userId;
+    console.log(id);
+
+    // Check if id is a valid number
+    const userIdNumber = Number(id);
+
+    const result = await userservice.deleteUser(userIdNumber);
+    if (result) {
+      res.status(200).json({
+        status: 'success',
+        message: 'User deleted successfully',
+        data: null,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+  } catch (error: any) {
+    console.log(error);
+    res.status(500).json({
+      status: 'fail',
+      message: error.message || 'Something went wrong',
+    });
+  }
+};
+
 export const usercontrollers = {
   createUser,
   getAlluser,
   getsingleuser,
   updateUser,
+  deleteUser,
 };
