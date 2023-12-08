@@ -9,7 +9,7 @@ app.use(cors());
 
 // Middleware for logging the entire req object
 app.use((req, res, next) => {
-  console.log('Request Object:', req);
+  console.log('Request Object:', req.body);
   next();
 });
 

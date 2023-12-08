@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { userZodSchema } from './user.validation';
 import { userservice } from './user.service';
@@ -5,9 +6,9 @@ import { userservice } from './user.service';
 const createUser = async (req: Request, res: Response) => {
   try {
     //console.log('Received data:', req.body);
-    const { user: userdata } = req.body;
+    const user = req.body;
     //console.log(userdata);
-    const zodparsedata = userZodSchema.parse(userdata);
+    const zodparsedata = userZodSchema.parse(user);
     // console.log(zodparsedata);
     const result = await userservice.createuserIntoDB(zodparsedata);
     //console.log(result);
@@ -48,9 +49,10 @@ const getAlluser = async (req: Request, res: Response) => {
 
 const getsingleuser = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
+    const userId = req.params.userId;
     console.log(typeof userId); // string
     const userIdNumber = Number(userId);
+    console.log(typeof userIdNumber);
     const result = await userservice.getsingleUserFromDB(userIdNumber);
 
     if (result) {
@@ -81,7 +83,7 @@ const getsingleuser = async (req: Request, res: Response) => {
 
 const getordersofsingleuser = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
+    const userId = req.params.userId;
     console.log(typeof userId); // string
     const userIdNumber = Number(userId);
     const result = await userservice.getordersofUserFromDB(userIdNumber);
@@ -114,7 +116,7 @@ const getordersofsingleuser = async (req: Request, res: Response) => {
 
 const updateUser = async (req: Request, res: Response) => {
   try {
-    const { user } = req.body;
+    const user = req.body;
     const id = req.params.userId;
     const userIdNumber = Number(id);
     const result = await userservice.updateUserFromDB(userIdNumber, user);
